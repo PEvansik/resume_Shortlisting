@@ -48,10 +48,10 @@ The module would return a list of dictionary objects with result as follows:
 ```
 [
     {
-        'education': [('BE', '2014')],
-        'email': 'omkarpathak27@gmail.com',
-        'mobile_number': '8087996634',
-        'name': 'Omkar Pathak',
+        'education': [('BE', '2023')],
+        'email': 'kwattrapuranjay@gmail.com',
+        'mobile_number': '9306614558',
+        'name': 'Puranjay kwatra',
         'skills': [
             'Flask',
             'Django',
