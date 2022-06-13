@@ -1,7 +1,10 @@
+from asyncio.windows_events import NULL
+from typing import Counter
 from urllib import response
 from django.shortcuts import render, redirect
+from resume_parser.utils import extract_years
 from pyresparser import ResumeParser
-from .models import Resume, UploadResumeModelForm
+from .models import Resume, UploadResumeModelForm, feedback
 from django.contrib import messages
 from django.conf import settings
 from django.db import IntegrityError
@@ -9,13 +12,23 @@ from django.http import HttpResponse, FileResponse, Http404
 from .models import Resume
 import os
 import csv
+#  extracting date time from experience string
+
+import re
+from datetime import datetime
+from django.contrib import messages
+
 
 def homepage(request):
+
+
     if request.method == 'POST':
         Resume.objects.all().delete()
+        # feedback.objects.all()
+
         file_form = UploadResumeModelForm(request.POST, request.FILES)
         files = request.FILES.getlist('resume')
-        resumes_data = []
+        resumes_data = []   
         if file_form.is_valid():
             for file in files:
                 try:
@@ -27,17 +40,41 @@ def homepage(request):
                     parser = ResumeParser(os.path.join(settings.MEDIA_ROOT, resume.resume.name))
                     data = parser.get_extracted_data()
                     resumes_data.append(data)
+                    # resume.check              = print('Maual check')
                     resume.name               = data.get('name')
                     resume.email              = data.get('email')
                     resume.mobile_number      = data.get('mobile_number')
+                #   calculateing years of experienece
+                    # resume.date_string        = data.get('date_string')
                     if data.get('degree') is not None:
                         resume.education      = ', '.join(data.get('degree'))
                     else:
                         resume.education      = None
-                    resume.company_names      = data.get('company_names')
-                    resume.college_name       = data.get('college_name')
+                    # if not data.get('company_names') :
+                    #     messages.warning(request, 'multiple fields is missing in requesting manual checking',Counter)
+
+                    # else:
+                    #     resume.company_names      = data.get('company_names')
+                    # # if data.get('college_name') is None:
+                    # #     messages.warning(request, 'Multiple filed is missing requesting manual checking in  Resume:')
+
+                    # else:
+                    #     resume.college_name       = data.get('college_name')
                     resume.designation        = data.get('designation')
-                    resume.total_experience   = data.get('total_experience')
+                    listofdates="28 june 2019-28 jan 2021"
+
+                    resume.years  = extract_years(listofdates)
+                    # resume.years(listofdates=listofdates)
+                    # if data.get('years') is not None:
+                    #     resume.years     = ', '.join(data.get('years'))
+                    # else:
+                    #     resume.years     ="Not able to detect dates"
+                    # print(resume.years)
+                
+
+                    # match_str = re.search(r'\')
+
+                    # resume.relvant_experience=data.get('relevant_experience')
                     if data.get('skills') is not None:
                         resume.skills         = ', '.join(data.get('skills'))
 
@@ -56,14 +93,10 @@ def homepage(request):
             messages.success(request, 'Resumes uploaded!')
             context = {
                 'resumes': resumes,
+                
             }
-
-            # My code
-           
-            
-
-
-            return render(request, 'base.html', context)
+        
+        return render(request, 'base.html', context)
     else:
         form = UploadResumeModelForm()
     return render(request, 'base.html', {'form': form})

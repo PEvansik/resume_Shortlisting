@@ -46,31 +46,8 @@ python resume_parser/manage.py runserver
 The module would return a list of dictionary objects with result as follows:
 
 ```
-[
-    {
-        'education': [('BE', '2023')],
-        'email': 'kwattrapuranjay@gmail.com',
-        'mobile_number': '9306614558',
-        'name': 'Puranjay kwatra',
-        'skills': [
-            'Flask',
-            'Django',
-            'Mysql',
-            'C',
-            'Css',
-            'Html',
-            'Js',
-            'Machine learning',
-            'C++',
-            'Algorithms',
-            'Github',
-            'Php',
-            'Python',
-            'Opencv'
-        ]
-    }
-]
-```
+
+
 
 # To DO
 
