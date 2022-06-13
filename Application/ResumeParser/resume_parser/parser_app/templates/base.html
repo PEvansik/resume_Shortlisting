@@ -70,15 +70,17 @@
             <thead>
               <tr>
                 <th>#</th>
+                <th>Manual check</th>
                 <th>Resume File</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Mobile Number</th>
                 <th>Education</th>
-                <th>Company Names</th>
+                <!-- <th>Company Names</th> -->
                 <th>Designation</th>
-                <th>College Name</th>
+                <!-- <th>College Name</th> -->
                 <th>Total Experience in years</th>
+                <th> Relevant Experience</th>
                 <th>Skills</th>
                 <th>Experience</th>
               </tr>
@@ -87,17 +89,41 @@
               {% for resume in resumes %}
                 <tr>
                   <td>{{forloop.counter}}</td>
+                  <td>
+
+                    {% if education  %}
+                    Manual Checking is Required in education field
+                    {% endif %}
+                    {% if mobile_number == None  %}
+                    Manual Checking is Required mobile_number fields is missing
+                    <a class="btn btn-primary" href="/admin">Feedback</a>
+                    {% else %}
+                    Eveything rendered
+                    {% endif %}
+                  </td>
+                  <script>
+                    function plays(){
+                      document.getElementById("updateDraw").innerHTML =
+                      Math.floor(Math.random() * 3);
+                    }
+                    
+                    window.onload = function () {
+                      plays();
+                    }
+                  </script>
                   <td><a href="{{resume.resume.url}}" target="_blank">{{resume.resume.url|truncatechars:20}}</a></td>
+                 
                   <td>{{resume.name}}</td>
                   <td>{{resume.email}}</td>
                   <td>{{resume.mobile_number}}</td>
                   <td>{{resume.education}}</td>
-                  <td>{{resume.company_names}}</td>
+                  <!-- <td>{{resume.company_names}}</td> -->
                   <td>{{resume.designation}}</td>
-                  <td>{{resume.college_name}}</td>
-                  <td>{{resume.total_experience}}</td>
+                  <!-- <td>{{resume.college_name}}</td> -->
+                  <td>{{resume.years}} years </td>
+                  <td>Not defined</td>
                   <td>{{resume.skills}}</td>
-                  <td>{{resume.experience}}</td>
+                  <td>{{resume.experience}}</td>  
                 </tr>
 
                 <label for="dog-names">Choose A job Description to generate score:</label>
@@ -110,7 +136,7 @@
 
 
               {% endfor %}
-            </tbody>
+            </tbody> 
           </table>
         </div>
       </div>

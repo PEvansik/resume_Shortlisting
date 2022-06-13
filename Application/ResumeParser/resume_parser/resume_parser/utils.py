@@ -15,6 +15,16 @@ from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords 
+from dateparser.search import search_dates
+
+import datefinder
+import dateutil.parser as dparser
+
+from datetime import datetime
+from daterangeparser import parse
+
+
+
 
 def extract_text_from_pdf(pdf_path):
     '''
@@ -213,6 +223,8 @@ def extract_education(nlp_text):
             education.append(key)
     return education
 
+
+
 def extract_experience(resume_text):
     '''
     Helper function to extract experience from resume text
@@ -245,6 +257,23 @@ def extract_experience(resume_text):
     # Search the word 'experience' in the chunk and then print out the text after it
     x = [x[x.lower().index('experience') + 10:] for i, x in enumerate(test) if x and 'experience' in x.lower()]
     return x
+
+listofdates="28 june 2021-28 jan 2026"
+
+def extract_years(listofdates):
+
+
+    start, end = parse(listofdates) #
+    # print ("Start = %s" % start)
+    # print ("End = %s" % end)
+    # print ("Days between start and end = %i" % (end-start).days)
+    years=(end -start).days
+    # years=extract_years(listofdates)
+   
+    return years
+
+
+   
 
 def extract_competencies(text, experience_list):
     '''
@@ -287,6 +316,8 @@ def extract_measurable_results(text, experience_list):
                     mr_dict[mr].append(item)
     
     return mr_dict
+
+
 
 def string_found(string1, string2):
     if re.search(r"\b" + re.escape(string1) + r"\b", string2):
